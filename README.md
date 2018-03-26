@@ -18,8 +18,8 @@ can be productive.
 This strategy makes sense for any internet connection that is billed by minute rather than by bytes, and that also takes a significant 
 time to connect and disconnect---like a dial-up connection! 
 
-Busyppp currently does not have a .config file or an interactive way to change its default settings. So if you want to change a 
-setting---with one exception---you will have to modify the script's code. Some such possible changes are discussed later in these notes. 
+Busyppp currently does not have a .config file or an interactive way to change its default settings. So, to change a 
+default---with one exception---you will have to modify the script itself. Some such possible changes are discussed later in these notes. 
 
 
 #####  System Requirements  #####
