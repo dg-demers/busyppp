@@ -86,11 +86,12 @@ Finally, busyppp sounds five long even higher-pitched beeps if the ppp network i
 
 
 #####  Command-Line Arguments -- Download Lists #####
-Busyppp takes one argument which should be a list of caret-(^)-separated URLs of files to download with the whole list enclosed in single-quotes ('), 
+Busyppp takes one argument which should be either a list of caret-(^)-separated URLs of files to download with the whole list enclosed in single-quotes ('), 
 for example,  
     $ ~/Scripts/busyppp.sh 'https://somewhere.de/somepdf.pdf ^ http://someplace.au/apackage.deb'  
-  OR the name of a file (in the current directory/folder) which contains a list of URLs for the files to download, 
-  one per line (but not single-quote (') enclosed and not using the caret as a separator).
+  OR the name of a file (in the current directory/folder) which contains a list of URLs for the files to download, one per line (but not single-quote-(')-enclosed 
+  and not using the caret as a separator), for example,  
+    $ ~/Scripts/busyppp.sh URL_list.txt 
 
 Terminology: We will call the first case a "download list argument" or a "URL list argument,"  and the second case a 
 "download list file" or a "URL list file." The generic case will just be called a "download list" or a "URL list" without 
