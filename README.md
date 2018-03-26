@@ -15,8 +15,8 @@ Soon afterward busyppp will stop the current wget download (by killing wget). An
 finished, and so busyppp starts wget again. And so the cycle repeats. This way every minute of connection time to your ISP 
 can be productive. 
 
-This strategy makes sense for any internet connection that is billed by minute rather than by bytes, and that also takes a significant 
-time to connect and disconnect---like a dial-up connection! 
+This strategy makes sense for any internet connection that is billed by the minute rather than by bytes transferred, and that 
+also takes a significant time to connect and disconnect---like a dial-up connection! 
 
 Busyppp currently does not have a .config file or an interactive way to change its default settings. So, to change a 
 default---with one exception---you will have to modify the script itself. Some such possible changes are discussed later in these notes. 
@@ -112,7 +112,8 @@ Also, any item in the download list argument after the first one (since the firs
 https://..., ftp://..., or ftps://...), or any line whatsoever of the download list file, that is blank or starts with a hash mark (#) is not given to wget for 
 downloading. 
 
-And in both cases the URLs plus possible wget options may include an optional terminal comment enclosed in square brackets that is ignored by wget. Like this:  
+And in both cases the URLs plus possible wget options may include an optional comment enclosed in square brackets "[]" at the end of the item. This comment is 
+ignored by wget. It looks like this example:  
   --limit-rate=1k http://people.au/apackage.deb  [optional comment]
 
 
@@ -124,11 +125,11 @@ It uses the following scheme:
   If wget was able to finish downloading the file, busyppp prepends #D followed by a space to the line containing it.  
   But if wget's attempt to a download the file produces a wget-specific error, busyppp prepends #E, a space, then the wget error code, and finally 
   a space to the line containing the file's URL.  
-  No changes are made to the line if busyppp (and wget) were stopped mid-download by pressing CTRL+C. 
+  No changes are made to a line if busyppp (and wget) were stopped during mid-download by the user pressing CTRL+C. 
 
 Then, upon termination, busyppp writes, using the same coding scheme, a report of the download results to both the terminal window and the file wget-log. 
-This is a consecutively numbered, double-spaced list of every non-blank, non-hash-mark-starting line or item in the download list. Actually, busyppp does 
-this for both a download list file and a download list argument. 
+This is a consecutively numbered, double-spaced list of every line or item in the download list. Actually, busyppp does this for both a download list file 
+and a download list argument. 
 
 
 #####  Busyppp's Exit/Error Codes and Stopping with CTRL+C  #####
