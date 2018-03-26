@@ -125,7 +125,7 @@ file from the URL in the line.
 
   If wget was able to finish downloading the file, busyppp prepends #D followed by a space to the line containing it.  
   But if wget's attempt to a download the file produces a wget-specific error, busyppp prepends #E, a space, then the wget error code, and finally 
-  a space to the line containing the file's URL. 
+  a space to the line containing the file's URL.  
   No changes are made to the line if busyppp (and wget) were stopped mid-download by pressing CTRL+C. 
 
 Upon termination busyppp writes, using the same codes, a report of the download results to both the terminal window and the file wget-log. It does this 
