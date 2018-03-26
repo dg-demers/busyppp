@@ -26,18 +26,26 @@ Busyppp requires bash, of course, as well as several external processes: wget, b
 so-named packages should be installed and they must be available to be run by the user.
 
 So far busyppp has only been tested with the following software:  
+
   Debian Stretch (Linux kernel release 4.13.0-1-686-pae)
+
   xterm 327-2
+
   bash 4.4.12
+
   wget 1.18
+
   beep 1.3
+
   ifstat 1.1 with the compiled-in drivers proc and snmp
+
   nethogs 0.8.5-37
 
 It's convenient to allow non-root users to be able to run nethogs. This can be accomplished by setting the 
-cap_net_admin and cap_net_raw capabilities for it with the setcap command. See 
+cap_net_admin and cap_net_raw capabilities for it with the setcap command. For details see 
 
-  https://github.com/raboof/nethogs/README.md for details.
+  https://github.com/raboof/nethogs/README.md
+
 
 In addition, to hear the helpful beep cues (see the section below with that title) you must set up your system to beep. It seems the default 
 in some Linux distributions is to turn off the ability to beep. To find out how to turn it back on see, for example, 
