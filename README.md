@@ -67,7 +67,7 @@ it stops executing busyppp deletes these two files.
 #####  Terminal Messages  #####
 Busyppp also reports what's happening every 2 seconds to the terminal window. It works in "trace mode" with the latest printout at the bottom of the 
 window and earlier messages scrolling off the top of the terminal window. Busyppp's scrolling output includes the download rate of both the browser 
-and wget, and whether wget is running or stopped, as well as some other messages. 
+and wget, and whether wget is running or stopped (as well as some other messages). 
 
 
 #####  Beep Cues  #####
@@ -98,24 +98,26 @@ For a download list file, in each line of the file the URL and any wget options 
 containing spaces, such as a --user-agent option, should be enclosed in single-quotes like this,  
   '--user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0"'
 
-Also, any line of the file that is blank or starts with a hash mark (#) is not given to wget for downloading by busyppp.
+Also, any line of the download list file, or any item in the download list argument after the first one (remember the first item in a download list 
+argument must start with http://..., https://..., ftp://..., or ftps://...), that is blank or starts with a hash mark (#) is not given to wget for 
+downloading by busyppp. 
 
-And in both cases the URL plus wget option items may include an optional terminal comment enclosed in square brackets that is ignored by wget, like  
+And in both cases the URL plus wget option items may include an optional terminal comment enclosed in square brackets that is ignored by wget. Like this:  
   --limit-rate=1k http://people.au/apackage.deb  [optional comment]
 
 
 #####  Overwriting the Download List File  #####
-Recall that for a download list file any line that is blank or that starts with a hash mark (#) is ignored by busyppp (and wget). 
-Busyppp will overwrite each non-blank and non-hash mark (#) commented line of this file according the success or not of its attempt to download the 
-file from the URL in the line.
+Recall that for a download list file any line that is blank or that starts with a hash mark (#) is ignored by busyppp (and wget). Busyppp will overwrite 
+each non-blank and non-hash mark (#) commented line of this file according the success or not of its attempt to download the file from the URL in the line 
+according to the following scheme: 
 
   If wget was able to finish downloading the file, busyppp prepends #D followed by a space to the line containing it.  
   But if wget's attempt to a download the file produces a wget-specific error, busyppp prepends #E, a space, then the wget error code, and finally 
   a space to the line containing the file's URL.  
   No changes are made to the line if busyppp (and wget) were stopped mid-download by pressing CTRL+C. 
 
-Upon termination busyppp writes, using the same codes, a report of the download results to both the terminal window and the file wget-log. It does this 
-for both a download list file and a download list argument. 
+Then, upon termination, busyppp writes, using the same coding scheme, a report of the download results to both the terminal window and the file wget-log. 
+This is a consecutively numbered, double-spaced list. Actually, busyppp does this for both a download list file and a download list argument. 
 
 
 #####  Busyppp's Exit/Error Codes and Stopping with CTRL+C  #####
@@ -142,7 +144,7 @@ If busyppp detects some simple input error that prevents it from operating norma
 not written according to the some of the requirements given in the section above "Command-Line Arguments -- Download Lists," or if the command-line 
 argument isn't the name of an a non-empty file in the current folder, busyppp returns code 13. 
 
-Finally, it is very abnormal if busyppp reaches the last few lines of the script. So then busyppp returns the exit/error code 99. 
+Finally, it is very abnormal for busyppp to execute the last few lines of the script. So then busyppp returns the exit/error code 99. 
 
 
 #####  Download Attempt Repeat on Wget Error Code 4  #####
@@ -175,12 +177,15 @@ admit an exception.
 By default busyppp gives wget the following options that I have found useful:  
   --limit-rate=4k -nd --read-timeout=600 -t 0 -c -v --progress=dot:giga -a wget-log
 
-However, it appears that any later option passed to wget overrides any corresponding earlier conflicting or differently-valued one. So these default option 
+However, it appears that any later option passed to wget overrides any corresponding earlier conflicting or differently-valued one. So these default  
 settings can also be more easily changed by specifying new values for them in each item of the download list (rather than modifying the 
 busyppp script). See the wget manual for details. 
 
-The wget option and value --limit-rate=4k is intended to leave some bandwidth "breathing room" for the web browser to start loading a webpage 
-at the same time wget is actively downloading. This value, 4k, works for me, with my usual maximum dial-up bandwidth of around 4.5 kiB/s. 
+The wget option and value  
+  --limit-rate=4k  
+is intended to leave some bandwidth "breathing room" for the web browser to start loading a webpage at the same time wget is actively downloading. This 
+value, 4k, works for me, with my usual maximum dial-up bandwidth of around 4.5 kiB/s. This suggests making it about 10% less than your usual maximum 
+bandwidth.
 
 A related default value is 0.40 kiB/s in this script line  
   if (($(bc <<< "$brate < 0.40")));  
@@ -196,13 +201,13 @@ also assumes that there is only one ppp network interface.
 
 
 #####  Abnormal Termination of Busyppp   #####
-If you ever notice that the auxiliary file netinfile exists prior to starting busyppp and that it is being written to every 2 seconds, i.e., the 
-Date Modified timestamp keeps changing, this is due to an earlier abnormal termination of busyppp. It means that ifstat has become a zombie or orphan 
-process. So you will have to kill it. See, for example,  
-  http://linuxg.net/what-are-zombie-and-orphan-processes-and-how-to-kill-them/
+If you ever notice that the auxiliary file netinfile exists prior to starting busyppp, and that it is being written to every 2 seconds, i.e., the 
+Date Modified timestamp keeps changing, this is due to an earlier abnormal termination of busyppp. It means that ifstat has become a "zombie" or "orphan 
+process." So you will have to kill it. See, for example,  
+  http://linuxg.net/what-are-zombie-and-orphan-processes-and-how-to-kill-them/ 
 
 You may also want to run htop, filter for "busyppp", and kill any processes that show up. To be thorough, do the same after filtering for "wget" and 
 "nethogs". 
 
-I don't think you will see this happen (unless, perhaps, your system is working near the limits of its processor speed and disk capacity). But it occured 
+I don't think you'll see this happen (unless, perhaps, your system is working near the limits of its processor speed and disk capacity). But it occured 
 fairly often during debugging. 
