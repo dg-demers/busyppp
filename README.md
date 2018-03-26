@@ -108,9 +108,9 @@ containing spaces, such as a --user-agent option, should be enclosed in single-q
 
 But these "per-option" single quotes are not required for a download list argument, which is itself entirely enclosed in single quote marks ('). 
 
-Also, any line of the download list file, or any item in the download list argument after the first one (remember the first item in a download list 
-argument must start with http://..., https://..., ftp://..., or ftps://...) that is blank or starts with a hash mark (#) is not given to wget for 
-downloading by busyppp. 
+Also, any item in the download list argument after the first one (remember the first item in a download list argument must start with http://..., 
+https://..., ftp://..., or ftps://...), or any line whatsoever of the download list file, that is blank or starts with a hash mark (#) is not given to wget for 
+downloading. 
 
 And in both cases the URL plus wget option items may include an optional terminal comment enclosed in square brackets that is ignored by wget. Like this:  
   --limit-rate=1k http://people.au/apackage.deb  [optional comment]
