@@ -126,7 +126,7 @@ It uses the following scheme:
   2) But if wget's attempt to a download the file produces a wget-specific error, busyppp prepends #E, a space, then the wget error code, and finally 
   a space to the line containing the file's URL.  
   3) No changes are made to a line, if either busyppp (and wget) were stopped during mid-download by the user pressing CTRL+C, or if no attempt to download the 
-  file at all was made during this run of busyppp. 
+  file at all was made during the current run of busyppp. 
 
 Then, upon termination, busyppp writes, using the same coding scheme, a report of the download results to both the terminal window and the file wget-log. 
 This is a consecutively numbered, double-spaced list of EVERY line or item in the download list. Actually, busyppp does this for both a download list file 
