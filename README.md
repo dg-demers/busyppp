@@ -1,4 +1,4 @@
-# busyppp
+## busyppp
 busyppp.sh is a bash script for dial-up connections that downloads files in the background while you browse
 
 
@@ -79,7 +79,7 @@ Finally, busyppp sounds five long even higher-pitched beeps if the ppp network i
 
 
 #####  Command-Line Arguments -- Download Lists #####
-Busyppp takes one argument which should be a list of caret (^)-separated URLs of files to download with the whole list enclosed in single-quotes ('), 
+Busyppp takes one argument which should be a list of caret-(^)-separated URLs of files to download with the whole list enclosed in single-quotes ('), 
 for example,  
     $ ~/Scripts/busyppp.sh 'https://somewhere.de/somepdf.pdf ^ http://someplace.au/apackage.deb'  
   OR the name of a file (in the current directory/folder) which contains a list of URLs for the files to download, 
@@ -169,13 +169,14 @@ may be a few seconds of overlap during the switchover from wget downloading to t
 
 
 #####  Other Default Settings  #####
-To modify busyppp's other default settings you must search for and find them in the script. 
+Generally, to modify busyppp's other default settings you must change them by hand in the script. The line of code discussed next, though, does 
+admit an exception. 
 
-By default busyppp gives wget the following options that I have found useful, namely,  
+By default busyppp gives wget the following options that I have found useful:  
   --limit-rate=4k -nd --read-timeout=600 -t 0 -c -v --progress=dot:giga -a wget-log
 
-However, it appears that the last option passed to wget overrides any earlier conflicting or differently-valued one. So these default option 
-settings can also more easily be changed by specifying new values for them in each item of the download list (rather than modifying the 
+However, it appears that any later option passed to wget overrides any corresponding earlier conflicting or differently-valued one. So these default option 
+settings can also be more easily changed by specifying new values for them in each item of the download list (rather than modifying the 
 busyppp script). See the wget manual for details. 
 
 The wget option and value --limit-rate=4k is intended to leave some bandwidth "breathing room" for the web browser to start loading a webpage 
