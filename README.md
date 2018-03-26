@@ -229,4 +229,4 @@ You may also want to run htop, filter for "busyppp", and kill any processes that
 "nethogs". 
 
 I don't think you will see this happen (unless, perhaps, your system is working near the limits of its processor speed and disk capacity). But I'm very 
-familiar with it occuring fairly often during development of the script. 
+familiar with it occuring fairly often during development of the script while bugs are being removed. 
