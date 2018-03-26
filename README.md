@@ -51,7 +51,7 @@ And beep itself needs to have its suid bit set. See
 #####  Downloaded and Wget Log Files  #####
 The files busyppp downloads are saved in the current directory/folder (unless otherwise specified with a user-provided wget command-line option). 
 
-Busyppp also creates (if nonexistent) or appends to the wget log file, named by default "wget-log," in the current directory/folder. Wget, of 
+Busyppp also creates (if nonexistent) or appends to the existing wget log file, named by default "wget-log," in the current directory/folder. Wget, of 
 course, also writes to wget-log, so busyppp augments that file with its own report of what's happening. The user should not change the 
 name and location of this file with a wget option unless all occurrences of the file name "wget-log" and file path in the script are also so changed.
 
@@ -79,7 +79,7 @@ below,
 
 #####  Beep Cues  #####
 In addition to what it reports in the terminal window busyppp also uses pc speaker beeps (through the beep package) as audio cues about the state 
-of wget's downloading. It gives one low-pitched beep when wget is stopped by busyppp and two short high-pitched beeps when wget is about to be started. 
+of wget's downloading. It gives one low-pitched beep when wget is about to be stopped by busyppp and two short high-pitched beeps when wget is about to be started. 
 
 You'll also hear five long higher-pitched beeps when wget either finishes downloading a file or gives up on trying to download it due to a wget error. 
 Finally, busyppp sounds five long even higher-pitched beeps if the ppp network interface is or just went down.
@@ -99,11 +99,11 @@ specifying "argument" or "file."
 
 In both cases the URLs may be accompanied by the usual wget command-line options. 
 
-For a busyppp download list argument, the list must immediately start (after the leading single quote) with 
-a URL as in http://..., https://..., ftp://..., or ftps://... . After this first item the order URLs and wget options in each item doesn't matter.
+For a busyppp download list argument, the list must immediately begin (after the leading single quote) with a URL as in http://..., https://..., ftp://..., or 
+ftps://... . After this first item the order of URLs and wget options in each item doesn't matter. 
 
 For a download list file, in each line of the file, the URL and any wget options may also be in any order, but any option 
-containing spaces, such as a --user-agent option, should be enclosed in single quotes like this,  
+containing spaces, such as a --user-agent option, should be enclosed in single quotes like this:  
   '--user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0"'  
 
 But these "per-option" single quotes are not required for a download list argument, which is itself entirely enclosed in single quote marks ('). 
@@ -112,8 +112,8 @@ Also, any item in the download list argument after the first one (since the firs
 https://..., ftp://..., or ftps://...), or any line whatsoever of the download list file, that is blank or starts with a hash mark (#) is not given to wget for 
 downloading. 
 
-And in both cases the URLs plus possible wget options may include an optional comment enclosed in square brackets "[]" at the end of the item. This comment is 
-ignored by wget. It looks like this example:  
+And in both cases the URLs plus possible wget options may include an optional comment enclosed in square brackets "[ ]" at the end of the item. This comment is 
+ignored by wget. Such an item would looks like this, for example:  
   --limit-rate=1k http://people.au/apackage.deb  [optional comment]
 
 
@@ -122,10 +122,10 @@ Recall that for a download list file any line that is blank or that starts with 
 each non-blank and non-hash-mark-(#)-starting line of this file according the success or not of its attempt to download the file from the URL in the line. 
 It uses the following scheme: 
 
-  If wget was able to finish downloading the file, busyppp prepends #D followed by a space to the line containing it.  
-  But if wget's attempt to a download the file produces a wget-specific error, busyppp prepends #E, a space, then the wget error code, and finally 
+  1) If wget was able to finish downloading the file, busyppp prepends #D followed by a space to the line containing it.  
+  2) But if wget's attempt to a download the file produces a wget-specific error, busyppp prepends #E, a space, then the wget error code, and finally 
   a space to the line containing the file's URL.  
-  No changes are made to a line, if either busyppp (and wget) were stopped during mid-download by the user pressing CTRL+C, or if no attempt to download the 
+  3) No changes are made to a line, if either busyppp (and wget) were stopped during mid-download by the user pressing CTRL+C, or if no attempt to download the 
   file at all was made during this run of busyppp. 
 
 Then, upon termination, busyppp writes, using the same coding scheme, a report of the download results to both the terminal window and the file wget-log. 
@@ -150,8 +150,8 @@ in the  terminal window. In this case busyppp returns an exit/error code of 9.
 If the ppp network interface is or went down (meaning the process pppd that handles the dial-up connection is not running), busyppp stops with the 
 exit/error code 10. 
 
-If busyppp detects an auxiliary file error that prevents it from operating normally it returns either 11 or 12. If the error is related to the file 
-wgetexitfile, it returns error code 11. If the error is related to the file netinfile, busyppp returns the code 12. 
+If busyppp detects an auxiliary file error that prevents it from operating normally it terminates and returns either 11 or 12. If the error is related to the file 
+wgetexitfile, it returns error code 11. If the error is related to the file netinfile, busyppp returns errorcode 12. 
 
 If busyppp detects some simple input error that prevents it from operating normally it returns 13. Specifically, if busyppp's command-line argument is 
 not written according to the some of the requirements given in the section above "Command-Line Arguments -- Download Lists," or if the command-line 
@@ -179,7 +179,7 @@ by adding the process name for your browser (with a prefixed "|") to the list as
   bline="$(grep -E "midori|xombrero|chrome|firefox" <<<"$nhline")";  
 You may also want to remove from that line the process names of any browsers you usually do not use. 
 
-Busyppp assumes either only one of the browsers in this line or the busyppp-started instance of wget is downloading at any time. (Although there 
+Busyppp assumes either only one of the browsers in this line or a busyppp-spawned instance of wget is downloading at any time. (Although there 
 may be a few seconds of overlap during the switchover from wget downloading to the browser downloading.) 
 
 
