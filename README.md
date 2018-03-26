@@ -60,7 +60,7 @@ name and location of this file with a wget option unless all occurrences of the 
 During operation a couple of temporary files are created in the current directory/folder, and written to and read by busyppp. These two files are 
 named wgetexitfile and netinfile. 
 
-Busyppp does not respect any preexisting files with these names: If they exist just after busyppp starts, it deletes them, (because they should have 
+Busyppp does not respect any preexisting files with these names: If they exist just after busyppp starts, it deletes them (because they should have 
 been deleted during a previous termination of busyppp). While running it usually first creates and then repeatedly overwrites them. And, finally, 
 before it stops executing busyppp deletes these two files. 
 
@@ -106,7 +106,7 @@ containing spaces, such as a --user-agent option, should be enclosed in single-q
   '--user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0"'
 
 Also, any line of the download list file, or any item in the download list argument after the first one (remember the first item in a download list 
-argument must start with http://..., https://..., ftp://..., or ftps://...), that is blank or starts with a hash mark (#) is not given to wget for 
+argument must start with http://..., https://..., ftp://..., or ftps://...) that is blank or starts with a hash mark (#) is not given to wget for 
 downloading by busyppp. 
 
 And in both cases the URL plus wget option items may include an optional terminal comment enclosed in square brackets that is ignored by wget. Like this:  
@@ -115,8 +115,8 @@ And in both cases the URL plus wget option items may include an optional termina
 
 #####  Overwriting the Download List File  #####
 Recall that for a download list file any line that is blank or that starts with a hash mark (#) is ignored by busyppp (and wget). Busyppp will overwrite 
-each non-blank and non-hash mark (#) commented line of this file according the success or not of its attempt to download the file from the URL in the line 
-according to the following scheme: 
+each non-blank and non-hash-mark-(#)-starting line of this file according the success or not of its attempt to download the file from the URL in the line. 
+It uses the following scheme: 
 
   If wget was able to finish downloading the file, busyppp prepends #D followed by a space to the line containing it.  
   But if wget's attempt to a download the file produces a wget-specific error, busyppp prepends #E, a space, then the wget error code, and finally 
