@@ -92,7 +92,7 @@ Finally, busyppp sounds five long even higher-pitched beeps if the ppp network i
 Busyppp takes one argument which should be a list of caret (^)-separated URLs of files to download with the whole list enclosed in single-quotes ('), 
 for example, 
 
-    $ busyppp.sh 'https://somewhere.de/somepdf.pdf ^ http://someplace.au/apackage.deb'
+    $ ~/Scripts/busyppp.sh 'https://somewhere.de/somepdf.pdf ^ http://someplace.au/apackage.deb'
 
   OR the name of a file (in the current directory/folder) which contains a list of URLs for the files to download, 
   one per line (but not single-quote (') enclosed and not using the caret as a separator).
