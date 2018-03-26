@@ -4,15 +4,16 @@ busyppp.sh is a bash script for dial-up connections that downloads files in the 
 
 #####  Overview  #####
 Busyppp controls wget to download files in the background somewhat like Microsoft's BITS, but specifically while you are 
-web browsing. Busyppp is intended to maximize the bytes downloaded on a dial-up connection that is also intermittently  
-used for browsing. That way every minute of connection time to your ISP can be productive. 
+web browsing. Busyppp is intended to maximize the bytes downloaded on a dial-up connection that is also intermittently 
+used for browsing. 
 
 Say you have a list of URLs of files to download. Maybe some ISOs, or some Ubuntu or Debian packages, or whatever. Now 
 presumably while surfing the net you will spend some time actually reading webpages that have already loaded. Or maybe you 
 will simply leave the computer temporarily for a short time. That's when busyppp senses you have stopped loading webpages 
 and puts wget to work successively downloading files from your list. But then, you come back and begin loading a new webpage. 
 Soon afterward busyppp will stop the current wget download (by killing wget). And now again, even later, the page loading has 
-finished, and so busyppp starts wget again. And so the cycle repeats. 
+finished, and so busyppp starts wget again. And so the cycle repeats. This way every minute of connection time to your ISP 
+can be productive. 
 
 This strategy makes sense for any internet connection that is billed by minute rather than by bytes, and that also takes a significant 
 time to connect and disconnect---like a dial-up connection! 
@@ -123,7 +124,8 @@ according to the following scheme:
   No changes are made to the line if busyppp (and wget) were stopped mid-download by pressing CTRL+C. 
 
 Then, upon termination, busyppp writes, using the same coding scheme, a report of the download results to both the terminal window and the file wget-log. 
-This is a consecutively numbered, double-spaced list. Actually, busyppp does this for both a download list file and a download list argument. 
+This is a consecutively numbered, double-spaced list of every non-blank, non-hash-mark-starting line or item in the download list. Actually, busyppp does 
+this for both a download list file and a download list argument. 
 
 
 #####  Busyppp's Exit/Error Codes and Stopping with CTRL+C  #####
@@ -183,9 +185,9 @@ admit an exception.
 By default busyppp gives wget the following options that I have found useful:  
   --limit-rate=4k -nd --read-timeout=600 -t 0 -c -v --progress=dot:giga -a wget-log
 
-However, it appears that any later option passed to wget overrides any corresponding earlier conflicting or differently-valued one. So these default  
-settings can also be more easily changed by specifying new values for them in each item of the download list (rather than modifying the 
-busyppp script). See the wget manual for details. 
+However, it appears that any later option passed to wget overrides any corresponding earlier conflicting or differently-valued one. So these default 
+settings can also be more easily changed by specifying new values for them in each item of the download list (rather than modifying the busyppp script). See 
+the wget manual for details. 
 
 The wget option and value  
   --limit-rate=4k  
