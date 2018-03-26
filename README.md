@@ -125,7 +125,7 @@ file from the URL in the line.
 
   If wget was able to finish downloading the file, busyppp prepends #D followed by a space to the line containing it.  
   But if wget's attempt to a download the file produces a wget-specific error, busyppp prepends #E, a space, then the wget error code, and finally 
-  a space to the line containing the file's URL. No changes are made to the line if busyppp (and wget) were stopped by pressing CTRL+C. 
+  a space to the line containing the file's URL. No changes are made to the line if busyppp (and wget) were stopped mid-download by pressing CTRL+C. 
 
 Upon termination busyppp writes, using the same codes, a report of the download results to both the terminal window and the file wget-log. It does this 
 for both a download list file and a download list argument. 
@@ -148,24 +148,23 @@ in the  terminal window. In this case busyppp returns an exit/error code of 9.
 If the ppp network interface is or went down (meaning the process pppd that handles the dial-up connection is not running), busyppp stops with the 
 exit/error code 10. 
 
-If busyppp detects an auxiliary file error that prevents it from operating normally it returns either 11 or 12. 
+If busyppp detects an auxiliary file error that prevents it from operating normally it returns either 11 or 12. If the error is related to the file 
+wgetexitfile, it returns error code 11. If the error is related to the file netinfile, busyppp returns the code 12. 
 
-  If the error is related to the file wgetexitfile, it returns error code 11. 
+If busyppp detects some simple input error that prevents it from operating normally it returns 13. Specifically, if busyppp's command-line argument is 
+not written according to the some of the requirements given in the section above "Command-Line Arguments -- Download Lists," or if the command-line 
+argument isn't the name of an a non-empty file in the current folder, busyppp returns code 13. 
 
-  If the error is related to the file netinfile, busyppp returns the code 12. 
-
-If busyppp detects some simple input error that prevents it from operating normally it returns 13. 
-
-Specifically, if busyppp's command-line argument is not written according to the some of the requirements given in the section above "Command-Line Arguments -- 
-Download Lists," or if the command-line argument isn't the name of an a non-empty file in the current folder, busyppp returns code 13. 
-
-Finally, if busyppp reaches the last few lines of the script it is very abnormal. So busyppp then returns the exit/error code 99. 
+Finally, it is very abnormal if busyppp reaches the last few lines of the script. So then busyppp returns the exit/error code 99. 
 
 
 #####  Download Attempt Repeat on Wget Error Code 4  #####
-The first time wget returns the error code 4, "network failure," for a given file URL busyppp immediately gives it one more try. In my experience wget 
-usually succeeds in starting the download on the second try. And, although it may be due to a misconfiguration of my system, such errors occur rather 
-frequently. Busyppp also reports and describes what happened on both these download attempts in the scrolling terminal output as well as the wget-log file. 
+During each run of busyppp, the first time wget returns the error code 4, "network failure," for a given file URL, busyppp immediately gives the download 
+one more try. If this immediate second attempt fails with the same error, the item in the download list is prepended with "#E 4 ". 
+
+In my experience wget usually succeeds in starting the download on the second try. And, although it may be due to a misconfiguration of my 
+system, such errors occur rather frequently. Busyppp also reports and describes what happened on both these download attempts in the scrolling terminal 
+output as well as the wget-log file. 
 
 
 #####  Web Browsers and Their Busyppp Settings  #####
@@ -228,3 +227,6 @@ process. So you will have to kill it. See, for example,
 
 You may also want to run htop, filter for "busyppp", and kill any processes that show up. To be thorough, do the same after filtering for "wget" and 
 "nethogs". 
+
+I don't think you will see this happen (unless, perhaps, your system is working near the limits of its processor speed and disk capacity). But I'm very 
+familiar with it occuring fairly often during development of the script. 
