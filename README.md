@@ -59,7 +59,7 @@ name and location of this file with a wget option unless all occurrences of the 
 During operation a couple of temporary files are created in the current directory/folder, and written to and read by busyppp. These two files are 
 named wgetexitfile and netinfile. 
 
-Busyppp does not respect any preexisting files with these names: Just after starting it deletes them, if they exist (because they should have been 
+Busyppp does not respect any preexisting files with these names: If they exist just after busyppp starts, it deletes them, (because they should have been 
 deleted during a previous termination of busyppp). While running it usually first creates and then repeatedly overwrites them. And, finally, before 
 it stops executing busyppp deletes these two files. 
 
@@ -203,5 +203,5 @@ process. So you will have to kill it. See, for example,
 You may also want to run htop, filter for "busyppp", and kill any processes that show up. To be thorough, do the same after filtering for "wget" and 
 "nethogs". 
 
-I don't think you will see this happen (unless, perhaps, your system is working near the limits of its processor speed and disk capacity). But I'm very 
-familiar with it occuring fairly often during development of the script while bugs are being removed. 
+I don't think you will see this happen (unless, perhaps, your system is working near the limits of its processor speed and disk capacity). But it occured 
+fairly often during development while bugs were being removed. 
