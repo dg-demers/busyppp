@@ -101,9 +101,11 @@ In both cases the URLs may be accompanied by the usual wget command-line options
 For a busyppp download list argument, the list must immediately start (after the leading single quote) with 
 a URL as in http://..., https://..., ftp://..., or ftps://... . After this first item the order URLs and wget options in each item doesn't matter.
 
-For a download list file, in each line of the file the URL and any wget options may be in any order, but any option 
+For a download list file, in each line of the file, the URL and any wget options may be in any order, but any option 
 containing spaces, such as a --user-agent option, should be enclosed in single-quotes like this,  
-  '--user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0"'
+  '--user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0"'  
+
+But these "per-option" single quotes are not required for a download list argument, which is itself entirely enclosed in single quote marks ('). 
 
 Also, any line of the download list file, or any item in the download list argument after the first one (remember the first item in a download list 
 argument must start with http://..., https://..., ftp://..., or ftps://...) that is blank or starts with a hash mark (#) is not given to wget for 
