@@ -62,16 +62,16 @@ The files busyppp downloads are saved in the current directory/folder (unless ot
 
 Busyppp also creates (if nonexistent) or appends to the wget log file, named by default "wget-log," in the current directory/folder. Wget, of 
 course, also writes to wget-log, so busyppp augments the wget log file with its own report of what is happening. The user should not change the 
-name and location of this file with a wget option unless all occurrences of the word "wget-log" in the script are also so changed.
+name and location of this file with a wget option unless all occurrences of the file name "wget-log" in the script are also so changed.
 
 
 #####  Auxiliary Files Used by Busyppp  #####
 During operation a couple of temporary files are created in the current directory/folder, and written to and read by busyppp. These two files are 
 named wgetexitfile and netinfile. 
 
-Busyppp does not respect any preexisting files with these names: Just after starting it deletes them (because they should have been deleted during 
-a previous termination of busyppp). While running it usually first creates and then repeatedly overwrites them. And, finally, before it stops executing 
-busyppp deletes these two files. 
+Busyppp does not respect any preexisting files with these names: Just after starting it deletes them, if they exist (because they should have been 
+deleted during a previous termination of busyppp). While running it usually first creates and then repeatedly overwrites them. And, finally, before 
+it stops executing busyppp deletes these two files. 
 
 
 #####  Terminal Messages  #####
@@ -120,12 +120,12 @@ And in both cases the URL plus wget option items may include an optional termina
 
 #####  Overwriting the Download List File  #####
 Recall that for a download list file any line that is blank or that starts with a hash mark (#) is ignored by busyppp (and wget). 
-Busyppp will overwrite each non-blank or non-hash mark (#) commented line of this file according the success or not of its attempt to download the 
+Busyppp will overwrite each non-blank and non-hash mark (#) commented line of this file according the success or not of its attempt to download the 
 file from the URL in the line.
 
   If wget was able to finish downloading the file, busyppp prepends #D followed by a space to the line containing it.  
-  But if wget attempts to a download the file and it results in a wget-specific error, busyppp prepends #E, a space, then the wget error code, and finally 
-  a space to the line containing the URL. 
+  But if wget's attempt to a download the file produces a wget-specific error, busyppp prepends #E, a space, then the wget error code, and finally 
+  a space to the line containing the file's URL. No changes are made to the line if busyppp (and wget) were stopped by pressing CTRL+C. 
 
 Upon termination busyppp writes, using the same codes, a report of the download results to both the terminal window and the file wget-log. It does this 
 for both a download list file and a download list argument. 
@@ -136,8 +136,8 @@ Busyppp has 8 possible exit/error codes: 0, 9-14, and 99.
 
 All exit and error codes, except 0, are also reported and described in the scrolling terminal output as well as the wget-log file. 
 
-If there actually are any items that busyppp can attempt to download in the URL list, as it currently exits after having possibly been overwritten in 
-previous runs, and busyppp stops because it tried to download all those items, busyppp returns the exit/error code 0. This exit code is used even if 
+If there actually are any items that busyppp can attempt to download in the URL list (as it currently exits after having possibly been overwritten in 
+previous runs), and busyppp stops because it tried to download all those items, busyppp returns the exit/error code 0. This exit code is used even if 
 wget-specific errors have occurred for any individual file in the list in the current or previous runs of busyppp. 
 
 But if all items in the URL list are either blank, or commented out with an initial hash mark (#) followed by anything, busyppp returns 14. 
@@ -151,9 +151,11 @@ exit/error code 10.
 If busyppp detects an auxiliary file error that prevents it from operating normally it returns either 11 or 12. 
 
   If the error is related to the file wgetexitfile, it returns error code 11. 
+
   If the error is related to the file netinfile, busyppp returns the code 12. 
 
 If busyppp detects some simple input error that prevents it from operating normally it returns 13. 
+
 Specifically, if busyppp's command-line argument is not written according to the some of the requirements given in the section above "Command-Line Arguments -- 
 Download Lists," or if the command-line argument isn't the name of an a non-empty file in the current folder, busyppp returns code 13. 
 
