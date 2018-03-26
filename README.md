@@ -89,8 +89,8 @@ Finally, busyppp sounds five long even higher-pitched beeps if the ppp network i
 Busyppp takes one argument which should be either a list of caret-(^)-separated URLs of files to download with the whole list enclosed in single-quotes ('), 
 for example,  
     $ ~/Scripts/busyppp.sh 'https://somewhere.de/somepdf.pdf ^ http://someplace.au/apackage.deb'  
-  OR the name of a file (in the current directory/folder) which contains a list of URLs for the files to download, one per line (but not single-quote-(')-enclosed 
-  and not using the caret as a separator), for example,  
+OR the name of a file (in the current directory/folder) which contains a list of URLs for the files to download, one per line (but not single-quote-(')-enclosed 
+and not using the caret as a separator), for example,  
     $ ~/Scripts/busyppp.sh URL_list.txt 
 
 Terminology: We will call the first case a "download list argument" or a "URL list argument,"  and the second case a 
@@ -102,17 +102,17 @@ In both cases the URLs may be accompanied by the usual wget command-line options
 For a busyppp download list argument, the list must immediately start (after the leading single quote) with 
 a URL as in http://..., https://..., ftp://..., or ftps://... . After this first item the order URLs and wget options in each item doesn't matter.
 
-For a download list file, in each line of the file, the URL and any wget options may be in any order, but any option 
-containing spaces, such as a --user-agent option, should be enclosed in single-quotes like this,  
+For a download list file, in each line of the file, the URL and any wget options may also be in any order, but any option 
+containing spaces, such as a --user-agent option, should be enclosed in single quotes like this,  
   '--user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0"'  
 
 But these "per-option" single quotes are not required for a download list argument, which is itself entirely enclosed in single quote marks ('). 
 
-Also, any item in the download list argument after the first one (remember the first item in a download list argument must start with http://..., 
+Also, any item in the download list argument after the first one (since the first item in a download list argument must start with http://..., 
 https://..., ftp://..., or ftps://...), or any line whatsoever of the download list file, that is blank or starts with a hash mark (#) is not given to wget for 
 downloading. 
 
-And in both cases the URL plus wget option items may include an optional terminal comment enclosed in square brackets that is ignored by wget. Like this:  
+And in both cases the URLs plus possible wget options may include an optional terminal comment enclosed in square brackets that is ignored by wget. Like this:  
   --limit-rate=1k http://people.au/apackage.deb  [optional comment]
 
 
