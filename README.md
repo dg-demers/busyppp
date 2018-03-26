@@ -204,4 +204,4 @@ You may also want to run htop, filter for "busyppp", and kill any processes that
 "nethogs". 
 
 I don't think you will see this happen (unless, perhaps, your system is working near the limits of its processor speed and disk capacity). But it occured 
-fairly often during development while bugs were being removed. 
+fairly often during debugging. 
