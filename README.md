@@ -4,8 +4,8 @@ busyppp.sh is a bash script for dial-up connections that downloads files in the 
 
 #####  Overview  #####
 Busyppp controls wget to download files in the background somewhat like Microsoft's BITS, but specifically while you are 
-web browsing. Busyppp is intended to maximize the bytes downloaded on a dial-up connection that is also intermittently being 
-used for browsing. That way you can productively use every minute of connection time to your ISP. 
+web browsing. Busyppp is intended to maximize the bytes downloaded on a dial-up connection that is also intermittently  
+used for browsing. That way every minute of connection time to your ISP can be productive. 
 
 Say you have a list of URLs of files to download. Maybe some ISOs, or some Ubuntu or Debian packages, or whatever. Now 
 presumably while surfing the net you will spend some time actually reading webpages that have already loaded. Or maybe you 
@@ -14,16 +14,16 @@ and puts wget to work successively downloading files from your list. But then, y
 Soon afterward busyppp will stop the current wget download (by killing wget). And now again, even later, the page loading has 
 finished, and so busyppp starts wget again. And so the cycle repeats. 
 
-This strategy makes sense for any internet connection that is billed by minute rather than by bytes, and that takes a significant 
+This strategy makes sense for any internet connection that is billed by minute rather than by bytes, and that also takes a significant 
 time to connect and disconnect---like a dial-up connection! 
 
-Busyppp currently does not have an interactive way to change its default settings. So if you want to change a setting---with one 
-exception---you will have to modify the script's code. Some such possible changes are discussed later in these notes. 
+Busyppp currently does not have a .config file or an interactive way to change its default settings. So if you want to change a 
+setting---with one exception---you will have to modify the script's code. Some such possible changes are discussed later in these notes. 
 
 
 #####  System Requirements  #####
 Busyppp requires bash, of course, as well as several external processes: wget, beep, ifstat, and nethogs. So their 
-so-named packages should be installed and they must be available to be run by the user.
+so-named packages should be installed and they must be available to be run by the user. 
 
 So far busyppp has only been tested with the following software:  
   Debian Stretch (Linux kernel release 4.13.0-1-686-pae)  
@@ -31,7 +31,7 @@ So far busyppp has only been tested with the following software:
   bash 4.4.12  
   wget 1.18  
   beep 1.3  
-  ifstat 1.1 with the compiled-in drivers proc and snmp   
+  ifstat 1.1 with the compiled-in drivers proc and snmp  
   nethogs 0.8.5-37
 
 It's convenient to allow non-root users to be able to run nethogs. This can be accomplished by setting the 
@@ -40,7 +40,7 @@ cap_net_admin and cap_net_raw capabilities for it with the setcap command. For d
 
 
 In addition, to hear the helpful beep cues (see the section below with that title) you must set up your system to beep. It seems the default 
-in some Linux distributions is to turn off the ability to beep. To find out how to turn it back on see, for example,  
+in many Linux distributions is to turn off the ability to beep. To find out how to turn it back on see, for example,  
   https://askubuntu.com/questions/277215/make-a-sound-once-process-is-complete
 
 And beep itself needs to have its suid bit set. See  
@@ -51,23 +51,29 @@ And beep itself needs to have its suid bit set. See
 The files busyppp downloads are saved in the current directory/folder (unless otherwise specified with a user-provided wget command-line option). 
 
 Busyppp also creates (if nonexistent) or appends to the wget log file, named by default "wget-log," in the current directory/folder. Wget, of 
-course, also writes to wget-log, so busyppp augments the wget log file with its own report of what is happening. The user should not change the 
-name and location of this file with a wget option unless all occurrences of the file name "wget-log" in the script are also so changed.
+course, also writes to wget-log, so busyppp augments that file with its own report of what's happening. The user should not change the 
+name and location of this file with a wget option unless all occurrences of the file name "wget-log" and file path in the script are also so changed.
 
 
 #####  Auxiliary Files Used by Busyppp  #####
 During operation a couple of temporary files are created in the current directory/folder, and written to and read by busyppp. These two files are 
 named wgetexitfile and netinfile. 
 
-Busyppp does not respect any preexisting files with these names: If they exist just after busyppp starts, it deletes them, (because they should have been 
-deleted during a previous termination of busyppp). While running it usually first creates and then repeatedly overwrites them. And, finally, before 
-it stops executing busyppp deletes these two files. 
+Busyppp does not respect any preexisting files with these names: If they exist just after busyppp starts, it deletes them, (because they should have 
+been deleted during a previous termination of busyppp). While running it usually first creates and then repeatedly overwrites them. And, finally, 
+before it stops executing busyppp deletes these two files. 
 
 
 #####  Terminal Messages  #####
-Busyppp also reports what's happening every 2 seconds to the terminal window. It works in "trace mode" with the latest printout at the bottom of the 
-window and earlier messages scrolling off the top of the terminal window. Busyppp's scrolling output includes the download rate of both the browser 
-and wget, and whether wget is running or stopped (as well as some other messages). 
+Busyppp reports what's happening every 2 seconds to the terminal window. It works in "trace mode" with the latest printout at the bottom of the window 
+and earlier messages scrolling off the top of the terminal window. During a download attempt for a given file, this scrolling output consists of the 
+download rate of both the browser and wget, and whether wget is running or stopped. 
+
+Busyppp also prints some other messages in the terminal window that should be self-explanatory. But, for more information, see parts of the sections 
+below,  
+  "Overwriting the Download List File,"  
+  "Busyppp's Exit/Error Codes and Stopping with CTRL+C," and  
+  "Download Attempt Repeat on Wget Error Code 4." 
 
 
 #####  Beep Cues  #####
