@@ -21,8 +21,8 @@
 # also takes a significant time to connect and disconnect---like a dial-up connection! 
 
 # Busyppp currently does not have a .config file or an interactive way to change its default settings. So, to change a 
-# default---with one exception---you will have to modify the script itself. Some such possible changes are discussed later in 
-# these notes. 
+# default---with one exception---you will have to modify the script itself. Some such possible changes are discussed in 
+# the README.md file. (The README.md file is the only documentation currently available.) 
 
 
 #####  System Requirements  #####
@@ -51,8 +51,8 @@
                                 #   runs in background asynchronously
                                 #   RETURNS 1 if there is no network connection of any kind (but return value is not used)
 # wgetwrap                      # 0 to multiple arguments (that are all passed to wget)
-# startwget                     # 1 argument  (a URL starting with http://, or https://, ftp://, or ftps://, and no or some wget options)
-# mainloop                      # 1 argument  (a URL starting with http://, or https://, ftp://, or ftps://, and no or some wget options)
+# startwget                     # 1 argument  (a URL starting with http://, or https://, ftp://, or ftps://, and no or some wget options, all in any order)
+# mainloop                      # 1 argument  (a URL starting with http://, or https://, ftp://, or ftps://, and no or some wget options, all in any order)
                                 #   RETURNS the wget exit code: 0-8
 
 
