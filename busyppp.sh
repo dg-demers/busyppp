@@ -6,21 +6,23 @@
 
 #####  Overview  #####
 # Busyppp controls wget to download files in the background somewhat like Microsoft's BITS, but specifically while you are 
-# web browsing. Busyppp is intended to maximize the bytes downloaded on a dial-up connection that is also intermittently being 
-# used for browsing. That way you can productively use every minute of connection time to your ISP. 
+# web browsing. Busyppp is intended to maximize the bytes downloaded on a dial-up connection that is also intermittently  
+# used for browsing. 
 
 # Say you have a list of URLs of files to download. Maybe some ISOs, or some Ubuntu or Debian packages, or whatever. Now 
 # presumably while surfing the net you will spend some time actually reading webpages that have already loaded. Or maybe you 
 # will simply leave the computer temporarily for a short time. That's when busyppp senses you have stopped loading webpages 
 # and puts wget to work successively downloading files from your list. But then, you come back and begin loading a new webpage. 
 # Soon afterward busyppp will stop the current wget download (by killing wget). And now again, even later, the page loading has 
-# finished, and so busyppp starts wget again. And so the cycle repeats. 
+# finished, and so busyppp starts wget again. And so the cycle repeats. This way every minute of connection time to your ISP 
+# can be productive. 
 
-# This strategy makes sense for any internet connection that is billed by minute rather than by bytes, and that takes a significant 
-# time to connect and disconnect---like a dial-up connection! 
+# This strategy makes sense for any internet connection that is billed by the minute rather than by bytes transferred, and that 
+# also takes a significant time to connect and disconnect---like a dial-up connection! 
 
-# Busyppp currently does not have an interactive way to change its default settings. So if you want to change a setting---with one 
-# exception---you will have to modify the script's code. Some such possible changes are discussed in the file README.md. 
+# Busyppp currently does not have a .config file or an interactive way to change its default settings. So, to change a 
+# default---with one exception---you will have to modify the script itself. Some such possible changes are discussed later in 
+# these notes. 
 
 
 #####  System Requirements  #####
@@ -38,15 +40,16 @@
 
 
 #####  functions defined  #####
-# deathwatch                    # 1 argument  (the process name of a process to be watched until it's terminated)
-# deletionwatch                 # 1 argument  (the file name of a file to be watched until it's deleted)
+# deathwatch                    # 1 argument  (the process name of a process to be watched until it terminates)
+# deletionwatch                 # 1 argument  (the file name of a file to be watched until it no longer exists)
 # pppdowncleanup                # 0 arguments
 # wgetexitedcleanup             # 0 arguments
 # finalcleanup                  # 1 argument  (the exit code busyppp should return)
-                                #   RETURNS this as the busyppp exit code
+                                #   RETURNS its argument as the busyppp exit code
 # trap_ctrlc                    # 0 arguments
 # putnetin                      # 1 argument  (the repeat interval of ifstat's' output, a decimal number of S.T seconds)
                                 #   runs in background asynchronously
+                                #   RETURNS 1 if there is no network connection of any kind (but return value is not used)
 # wgetwrap                      # 0 to multiple arguments (that are all passed to wget)
 # startwget                     # 1 argument  (a URL starting with http://, or https://, ftp://, or ftps://, and no or some wget options)
 # mainloop                      # 1 argument  (a URL starting with http://, or https://, ftp://, or ftps://, and no or some wget options)
@@ -57,11 +60,11 @@
 #
 # by default all files are in the current directory/folder
 #
-# wget-log                      # used in pppdowncleanup (written), wgetexitedcleanup (read), finalcleanup (written), trap_ctrlc (written), 
-                                #         wgetwrap (written), startwget (written), mainloop (written), script body (written)
-# wgetexitfile                  # used in finalcleanup (deleted), wgetwrap (written), startwget (deleted), mainloop (read, deleted), script body (deleted)
+# wget-log                      # used in pppdowncleanup (writes), wgetexitedcleanup (reads), finalcleanup (writes), trap_ctrlc (writes), 
+                                #         wgetwrap (writes), startwget (writes), mainloop (writes), script body (writes)
+# wgetexitfile                  # used in finalcleanup (deletes), wgetwrap (writes), startwget (deletes), mainloop (reads, deletes), script body (deletes)
                                 #   temporary, deleted when busyppp stops
-# netinfile                     # used in finalcleanup (deleted), putnetin (written), mainloop (read), script body (deleted)
+# netinfile                     # used in finalcleanup (deletes), putnetin (writes), mainloop (reads), script body (deletes)
                                 #   temporary, deleted when busyppp stops; updated (rewritten) every 2 seconds
 
 
@@ -151,7 +154,7 @@ declare sleeptime;              # used in script body             sleeptime decl
 #####  function-wise local variable declaration and type  #####
 ###        in function putnetin        ###
 # declare ifstatline="";        # locally declared untyped in and used in putnetin; normal value: general string
-# declare x="";                 # locally declared untyped in and used in putnetin; normal value: general string
+# declare netin="";             # locally declared untyped in and used in putnetin; normal value: general string
 # declare -i j=0;               # locally declared integer in and used in putnetin; normal value: integer, 0-3 range
 
 
@@ -225,7 +228,7 @@ finalcleanup() {
   exit "$1"; 
 }; 
 
-trap_ctrlc () { 
+trap_ctrlc() { 
   echo; 
   echo "busyppp EXIT code 9:  CTRL+C was pressed."; 
   echo "  Stopping normally by your request."; 
@@ -243,7 +246,7 @@ pgrep -x pppd >/dev/null || pppdowncleanup;   # sets the final exit/error code t
 
 putnetin() { 
   declare ifstatline=""; 
-  declare x=""; 
+  declare netin=""; 
   declare -i j=0; 
   { 
     while IFS=$' \t\n' read -r ifstatline; 
@@ -252,12 +255,12 @@ putnetin() {
       then 
         j+=1; 
       else
-        x=$(awk '{print $1}' <<<"$ifstatline"); 
-        if [[ $x == "n/a" ]]; 
+        netin=$(awk '{print $1}' <<<"$ifstatline"); 
+        if [[ $netin == "n/a" ]]; 
         then 
           return 1; 
         fi; 
-        echo "$x" >netinfile; 
+        echo "$netin" >netinfile; 
       fi; 
     done; 
   } < <(ifstat -zwn "$1"); # removed -b to change to kB/s from kbps 
