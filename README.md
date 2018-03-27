@@ -19,7 +19,8 @@ This strategy makes sense for any internet connection that is billed by the minu
 also takes a significant time to connect and disconnect---like a dial-up connection! 
 
 Busyppp currently does not have a .config file or an interactive way to change its default settings. So, to change a 
-default---with one exception---you will have to modify the script itself. Some such possible changes are discussed later in these notes. 
+default---with one exception---you will have to modify the script itself. Some such possible changes are discussed later 
+in these notes. 
 
 
 #####  System Requirements  #####
@@ -200,18 +201,17 @@ is intended to leave some bandwidth "breathing room" for the web browser to star
 value, 4k, works for me, with my usual maximum dial-up bandwidth of around 4.5 kiB/s. This suggests making it about 10% less than your usual maximum 
 bandwidth.
 
-A related default value is 0.40 kiB/s in this script line  
+A related default value is 0.40 in this script line:  
   if (($(bc <<< "$brate < 0.40")));  
-This is the kiB/s threshold for webpage loading by the browser at which busyppp starts or stops wget: It stops wget (kills it) if the browser 
-is loading at or higher than this rate and starts wget if the browser is loading at less than it. You may want to fiddle with this threshold value of
-0.40, but it works well for me. 
+This is the download threshold in kiB/s at which busyppp starts or stops wget: It stops wget (kills it) if the browser is loading at or higher than this 
+rate and starts wget if the browser is loading at less than it. You may want to fiddle with it, but this threshold value of 0.40 kiB/s works well for me. 
 
 The following line in the busyppp script  
     } < <(nethogs -t -d 2 ppp0 &);  
 assumes that there is only one ppp network interface named "ppp0". Another line in the script  
-  x=$(awk '{print $1}' <<<"$ifstatline");  
+  netin=$(awk '{print $1}' <<<"$ifstatline");  
 also assumes that there is only one ppp network interface. 
-
+  
 
 #####  Abnormal Termination of Busyppp   #####
 If you ever notice that the auxiliary file netinfile exists prior to starting busyppp, and that it is being written to every 2 seconds, i.e., the 
@@ -224,3 +224,11 @@ You may also want to run htop, filter for "busyppp", and kill any processes that
 
 I don't think you'll see this happen (unless, perhaps, your system is working near the limits of its processor speed and disk capacity). But it occured 
 fairly often during debugging. 
+
+
+#####  Alternative Software   #####
+Free Download Manager running under WINE can throttle its download rate if it senses a web browser is being used. But it takes too much processor time and 
+memory for my system. 
+
+Microsoft BITS (Background Intelligent Transfer Service) could be an alternative, but it's not supported by WINE. And my system is not fast enough 
+to run it in a virtual Windows machine. 
