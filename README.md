@@ -37,9 +37,8 @@ So far busyppp has only been tested with the following software:
   nethogs 0.8.5-37
 
 It's convenient to allow non-root users to be able to run nethogs. This can be accomplished by setting the 
-cap_net_admin and cap_net_raw capabilities for it with the setcap command. For details see  
-  https://github.com/raboof/nethogs/blob/master/README.md
-
+cap_net_admin and cap_net_raw capabilities for it with the setcap command. For details see the README.md text displayed at  
+  https://github.com/raboof/nethogs/
 
 In addition, to hear the helpful beep cues (see the section below with that title) you must set up your system to beep. It seems the default 
 in many Linux distributions is to turn off the ability to beep. To find out how to turn it back on see, for example,  
