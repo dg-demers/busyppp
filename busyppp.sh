@@ -3,6 +3,13 @@
 #####  Busyppp  #####
 # This is busyppp.sh; it is a bash script that runs on Linux systems. 
 
+# It is released as free of charge software, as well as free and open source software, under the 
+# GNU General Public License v3.0 by its developer D. G. Demers through the GitHub project page
+# https://github.com/dg-demers/busyppp/
+
+# Please contact me by registering for a free account on github.com and creating a new issue for busyppp at
+# https://github.com/dg-demers/busyppp/issues
+
 
 #####  Overview  #####
 # Busyppp controls wget to download files in the background somewhat like Microsoft's BITS, but specifically while you are 
@@ -26,8 +33,8 @@
 
 
 #####  System Requirements  #####
-# Busyppp requires bash, of course, as well as several external processes: wget, beep, ifstat, and nethogs. So their 
-# so-named packages should be installed and they must be available to be run by the user.
+# Busyppp requires bash, of course, as well as several external processes: wget, beep, pppd, ifstat, and nethogs. So their 
+# so- or similar-named packages should be installed and they must be available to be run by the user.
 
 # So far busyppp has only been tested with the following software:  
 #   Debian Stretch (Linux kernel release 4.13.0-1-686-pae)
@@ -35,6 +42,7 @@
 #   bash 4.4.12
 #   wget 1.18
 #   beep 1.3
+#   pppd 2.4.7
 #   ifstat 1.1 with the compiled-in drivers proc and snmp
 #   nethogs 0.8.5-37
 
