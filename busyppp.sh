@@ -1,13 +1,18 @@
 #!/bin/bash
 
 #####  Busyppp  #####
-# This is busyppp.sh; it is a bash script that runs on Linux systems. 
+# busyppp.sh is a bash script for dial-up connections that downloads files in the background while you browse.  
+# It is self-throttling and uses relatively few system resources. 
 
-# It is released as free of charge software, as well as free and open source software, under the 
+# It is not warranted to be error-free and any adverse consequences of its use or misuse are the sole responsibility 
+# of the user. 
+
+# busyppp is released as free of charge software, as well as free and open source software, under the 
 # GNU General Public License v3.0 by its developer D. G. Demers through the GitHub project page
 # https://github.com/dg-demers/busyppp/
 
-# Please contact me by registering for a free account on github.com and creating a new issue for busyppp at
+# If you have any questions of comments related to busyppp, please contact me by registering for a free account on 
+# github.com and creating a new issue for busyppp at 
 # https://github.com/dg-demers/busyppp/issues
 
 
