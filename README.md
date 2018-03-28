@@ -56,12 +56,18 @@ It's convenient to allow non-root users to be able to run nethogs. This can be a
 cap_net_admin and cap_net_raw capabilities for it with the setcap command. For details see the README.md text displayed at  
   https://github.com/raboof/nethogs/
 
-In addition, to hear the helpful beep cues (see the section below with that title) you must set up your system to beep. It seems the default 
-in many Linux distributions is to turn off the ability to beep. To find out how to turn it back on see, for example,  
+In addition, to hear the helpful beep cues (see the section below with that title) you must set up your system to beep. It seems 
+the default in many Linux distributions is to turn off the ability to beep. To find out how to turn it back on see, for example,  
   https://askubuntu.com/questions/277215/make-a-sound-once-process-is-complete
 
 And beep itself needs to have its suid bit set. See  
   https://github.com/johnath/beep
+
+
+#####  Network Quality Requirement  #####
+Busyppp currently works best with a dial-up connection that usually has a consistent download speed. It was not designed to adapt to 
+changing network conditions. So if your connection speed begins to degrade for, say, 5-10 minutes you should probably stop using 
+busyppp until the download rate returns to normal. Or, if your speed usually fluctuates wildly in a session, busyppp is not for you. 
 
 
 #####  Downloaded and Wget Log Files  #####
