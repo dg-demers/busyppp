@@ -1,6 +1,13 @@
 ## busyppp
 busyppp.sh is a bash script for dial-up connections that downloads files in the background while you browse
 
+It is released as free of charge software, as well as free and open source software, under the 
+GNU General Public License v3.0 by its developer D. G. Demers through the GitHub project page  
+https://github.com/dg-demers/busyppp/
+
+Please contact me by registering for a free account on github.com and creating a new issue for busyppp at  
+https://github.com/dg-demers/busyppp/issues
+
 
 #####  Overview  #####
 Busyppp controls wget to download files in the background somewhat like Microsoft's BITS, but specifically while you are 
@@ -24,8 +31,8 @@ in these notes.
 
 
 #####  System Requirements  #####
-Busyppp requires bash, of course, as well as several external processes: wget, beep, ifstat, and nethogs. So their 
-so-named packages should be installed and they must be available to be run by the user. 
+Busyppp requires bash, of course, as well as several external processes: wget, beep, pppd, ifstat, and nethogs. So their 
+so- or similar-named packages should be installed and they must be available to be run by the user.
 
 So far busyppp has only been tested with the following software:  
   Debian Stretch (Linux kernel release 4.13.0-1-686-pae)  
@@ -33,8 +40,13 @@ So far busyppp has only been tested with the following software:
   bash 4.4.12  
   wget 1.18  
   beep 1.3  
+  pppd 2.4.7  
   ifstat 1.1 with the compiled-in drivers proc and snmp  
-  nethogs 0.8.5-37
+  nethogs 0.8.5-37 
+
+To use busyppp you must be connected through pppd (the point-to-point protocol daemon) to your dial-up ISP. Although you may 
+never have heard about pppd, you are connected through it if you have used one of its various GUI frontends, such as kppp, 
+gnome-ppp, or wvdial, that ultimately employs pppd to make the connection. 
 
 It's convenient to allow non-root users to be able to run nethogs. This can be accomplished by setting the 
 cap_net_admin and cap_net_raw capabilities for it with the setcap command. For details see the README.md text displayed at  
