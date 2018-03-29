@@ -49,7 +49,7 @@ So far busyppp has only been tested with the following software:
   nethogs 0.8.5-37 
 
 To use busyppp you must be connected through pppd (the point-to-point protocol daemon) to your dial-up ISP. Although you may 
-never have heard about pppd, you are connected through it if you have used one of its various GUI frontends, such as kppp, 
+never have heard of pppd, you are connecting through it if you have used one of its various GUI or TUI frontends, such as kppp, 
 gnome-ppp, or wvdial, that ultimately employs pppd to make the connection. 
 
 It's convenient to allow non-root users to be able to run nethogs. This can be accomplished by setting the 
