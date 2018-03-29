@@ -133,7 +133,7 @@ declare brate;                  # used in mainloop                brate declared
 declare -i refreshnumber;       # used in mainloop                refreshnumber declared as integer; 
                                 #                                   normal value: integer, 0 up to max bash integer
 declare -i stoprefreshnumber;   # used in mainloop                stoprefreshnumber declared as integer; 
-                                #                                   normal value: integer, 8 up to max bash integer (min 8, but may possibly be changed)
+                                #                                   normal value: integer, 8 up to max bash integer (min 8=4+1+3, but may possibly be changed)
 declare -i bratelowtimes;       # used in mainloop                bratelowtimes declared as integer; 
                                 #                                   normal value: integer, 0 up to max bash integer
 declare -i wgetrerun;           # used in mainloop                wgetrerun declared as integer; 
@@ -206,7 +206,6 @@ wgetexitedcleanup() {
   fi; 
   # now make sure wget is dead
   ((wgetpid)) && ps -q "$wgetpid" >/dev/null && kill -2 "$wgetpid" && deathwatch "$wgetpid" && { echo; echo "wget stopped (but it should have already been dead)"; }; 
-
   beep -f 3900 -l 200 -r 5 -d 400; 
 }; 
 
@@ -340,7 +339,7 @@ mainloop() {
       fi; 
       if fgrep "Refreshing:" <<<"$nhline" >/dev/null;  # if this is a refresh line, update screen & choose to continue/start or keep stopped/stop wget
       then 
-        refreshnumber+=1; 
+        refreshnumber+=1;  # increment nethogs refresh cycle number
         if ((refreshnumber <= 2)); 
         then 
           echo "refresh $refreshnumber/2:  waiting for network stats to stabilize"; 
@@ -365,13 +364,13 @@ mainloop() {
                     brate=$(< netinfile); 
                     sleep 0.50; 
                   fi; 
-                done; 
+                done;  # closing the "until [ -n "$brate" ]; do" loop
                 break;  # leave the netintries do loop
               else 
                 netintries+=1; 
                 sleep 0.50; 
               fi; 
-            done; 
+            done;  # closing the "((netintries <= 2)); do" loop
             if [ -z "$brate" ];    # this gives true for UNSET and the empty string, but not the value 0 AND is portable
             then 
               echo; 
@@ -386,25 +385,25 @@ mainloop() {
             fi; 
           elif ((refreshnumber <= stoprefreshnumber)); 
           then 
-            brate="0.00000"; 
+            brate="0.00000";  # if $refreshnumber (nethogs refresh cycle number) is <= $stoprefreshnumber inhibit stopping wget while $brate may be jittery
           else 
             brate=$(awk '{print $NF}' <<<"$bbline"); 
           fi; # closing the "if ! ((wgetrun)); elif..." conditional branch
           echo " Browser: $brate KB/s"; 
           ((wgetrerun >= 2)) && wgetrerun=0; 
           ((wgetrerun)) && wgetrerun=2; 
-          if (($(bc <<< "$brate < 0.40"))); 
+          if (($(bc <<< "$brate < 0.40")));  # 0.40 kiB/s is the browser data rate in threshold for running/stopping wget
           then  # opening the "if (($(bc <<< "$brate < 0.40"))); then" conditional branch
             bratelowtimes+=1; 
-            if ((bratelowtimes >= 2)); 
+            if ((bratelowtimes >= 2));  # browser data rate in must be below threshold for at least 2 consective refresh cycles to start/continue running wget
             then  # opening the "if ((bratelowtimes" >= 2)); then" conditional branch (within the "if (($(bc <<< "$brate < 0.40"))); then" conditional branch)
               echo "RUN wget"; echo; 
-              if ((wgetrun)); 
+              if ((wgetrun));  # was the last attempt to change wget's state in the direction STOPPED-->STARTED?
               then 
-                if ((wgetpid)) && ps -q "$wgetpid" >/dev/null; 
+                if ((wgetpid)) && ps -q "$wgetpid" >/dev/null;  # is the last started instance of wget actually still running?
                 then 
-                  :; 
-                else  # opening the "if ((wgetpid)) && ps -q "$wgetpid" >/dev/null; else" conditional branch
+                  :;  # wget is still running, so do nothing
+                else  # wget has stopped running, now try to get its exit code
                   wgetexit=;  # initialize wgetexit to UNSET
                   wgetexittries=0; # initialize loop counter to 0
                   while ((wgetexittries <= 2)); # for loop sleep 0.50: give up after 1.0 seconds = 3 tries max
@@ -416,20 +415,20 @@ mainloop() {
                       do 
                         if ((wgetexittries > 2)); # for loop sleep 0.50: give up after 1.0 seconds = 3 tries max
                         then 
-                          break 2;  # leave the wgetexittries do loop (and this inner loop) 
+                          break 2;  # leave the wgetexittries do loop (and this inner loop)
                         else 
                           wgetexittries+=1; 
                           wgetexit=$(< wgetexitfile); 
                           sleep 0.50; 
                         fi; 
-                      done; 
+                      done;  # closing the "until [ -n "$wgetexit" ]; do" loop
                       rm wgetexitfile >/dev/null && deletionwatch wgetexitfile; 
                       break;  # leave the wgetexittries do loop
                     else 
                       wgetexittries+=1; 
                       sleep 0.50; 
                     fi; 
-                  done; 
+                  done;  # closing the "while ((wgetexittries <= 2)); do" loop
                   if [ -z "$wgetexit" ];    # this gives true for UNSET and the empty string, but not the value 0 AND is portable
                   then 
                     echo; 
@@ -445,7 +444,7 @@ mainloop() {
                       echo; 
                       echo "File already downloaded or just finished downloading - nothing to do"; 
                       wgetexitedcleanup; 
-                      return 0;   # set mainloop exit/error code to 0
+                      return 0;  # set mainloop exit/error code to 0
                     elif ! ((wgetexit == 4)); 
                     then 
                       echo; 
@@ -517,13 +516,13 @@ mainloop() {
                       startwget "$1";  # the wget (re-)start code has been abstracted into this function 
                     fi;   # closing the "if ! ((wgetexit)); then..." conditional chain
                   fi;   # closing the "if [ -z "$wgetexit" ]; else" conditional branch
-                fi; # closing the "if ((wgetpid)) && ps -q "$wgetpid" >/dev/null; else" conditional branch
+                fi;   # closing the "if ((wgetpid)) && ps -q "$wgetpid" >/dev/null; else" conditional branch
               else  # opening the "if ((wgetrun)); else" conditional branch 
                 beep -f 480 -r 2;   # 2 high-pitched beeps
-                ((refreshnumber == 4)) || stoprefreshnumber=$((refreshnumber + 3)); 
+                ((refreshnumber == 4)) || stoprefreshnumber=$((refreshnumber + 3));  # inhibit stopping wget for next 3 nethogs refresh cycles if this is not the 4th cycle
                 startwget "$1";  # the wget (re-)start code has been abstracted into this function
               fi;   # closing the "if ((wgetrun)); else" conditional branch
-            fi; # closing the "if ((bratelowtimes >= 2)); then" conditional branch (within the "if (($(bc <<< "$brate < 0.40"))); then" conditional branch)
+            fi;   # closing the "if ((bratelowtimes >= 2)); then" conditional branch (within the "if (($(bc <<< "$brate < 0.40"))); then" conditional branch)
           else  # opening the "if (($(bc <<< "$brate < 0.40"))); else" conditional branch, the (the "STOP wget") conditional branch
             echo "STOP wget"; 
             echo; 
@@ -539,9 +538,9 @@ mainloop() {
           bline="";   # set bline to empty string as default
           bbline="Browser 0.00";   # brate set to 0.00 KB/s - default if no nonempty bline occurs in a refresh cycle
           wline="";   # set wline to empty string as default
-        fi; # closing the "if ((refreshnumber <= 2)); else" conditional branch
+        fi;   # closing the "if ((refreshnumber <= 2)); else" conditional branch
       fi;   # closing the "if fgrep "Refreshing:" <<<$nhline >/dev/null; then" conditional branch
-    done;   # closing the "while IFS=$' \t\n' read -r nhline; do" loop, the main loop reading lines of on-going output from nethogs
+    done; # closing the "while IFS=$' \t\n' read -r nhline; do" loop, the main loop reading lines of on-going output from nethogs
   } < <(nethogs -t -d 2 ppp0 &); 
 }; 
 
