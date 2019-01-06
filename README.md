@@ -48,7 +48,7 @@ So far busyppp has only been tested with the following software:
   ifstat 1.1 with the compiled-in drivers proc and snmp  
   nethogs 0.8.5-37 
 
-To use busyppp you must be connected through pppd (the point-to-point protocol daemon) to your dial-up ISP. Although you may 
+To use busyppp you must be connected through pppd (the point-to-point protocol daemon) to your dial-up ISP _and it must be your_ **only** _active network connection._ Although you may 
 never have heard of pppd, you are connecting through it if you have used one of its various GUI or TUI frontends, such as kppp, 
 gnome-ppp, or wvdial, that ultimately employs pppd to make the connection. 
 
